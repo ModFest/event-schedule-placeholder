@@ -45,20 +45,24 @@ public class EventSchedule {
     }
 
     public void update() {
-        var time = Instant.now();
+        try {
+            var time = Instant.now();
 
-        events.removeIf(x -> x.end.isBefore(time));
+            events.removeIf(x -> x.end.isBefore(time));
 
-        if (currentEvent != null && currentEvent.end.isBefore(time)) {
-            currentEvent = null;
-        }
-
-        if (currentEvent == null && !events.isEmpty()) {
-            var event = events.getFirst();
-            if (event.start.isBefore(time)) {
-                currentEvent = event;
-                events.removeFirst();
+            if (currentEvent != null && currentEvent.end.isBefore(time)) {
+                currentEvent = null;
             }
+
+            if (currentEvent == null && !events.isEmpty()) {
+                var event = events.getFirst();
+                if (event.start.isBefore(time)) {
+                    currentEvent = event;
+                    events.removeFirst();
+                }
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
     }
 

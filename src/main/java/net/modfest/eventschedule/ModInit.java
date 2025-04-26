@@ -6,7 +6,7 @@ import eu.pb4.placeholders.api.Placeholders;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.minecraft.server.MinecraftServer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -22,6 +22,7 @@ public class ModInit implements ModInitializer {
 
         CommandRegistrationCallback.EVENT.register(EventSchedule::createCommands);
         ServerLifecycleEvents.SERVER_STARTING.register(EventSchedule::load);
+        ServerTickEvents.END_SERVER_TICK.register(x -> EventSchedule.instance.update());
     }
 
     private static PlaceholderResult eventInfo(PlaceholderContext placeholderContext, String s) {
